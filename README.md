@@ -53,7 +53,9 @@ The model searches the full available index for each image. Scores are **not pro
 
 ## Public preview availability
 
-The bundled server address is a **temporary Cloudflare tunnel**. It works only while that tunnel and the Brev service are running, and can change when the tunnel is recreated. Installing the plugin does not host the model or guarantee service availability.
+The bundled API address is **https://api.photoprot.uk**; the website is [photoprot.uk](https://photoprot.uk). A named Cloudflare Tunnel connects it to the Brev GPU. Both inference and the tunnel restart automatically as system services. The hostname persists across tunnel restarts; availability still depends on the Brev instance running. Installing the plugin does not host the model or guarantee uptime.
+
+The separate [reproducibility repository](https://github.com/CXFG01/photoprot-reproducibility) provides the checkpoint, full index, benchmark data and reproduction commands.
 
 If the address changes, use an operator-provided PhotoProt HTTPS origin through `PHOTOPROT_URL` in the environment inherited by Codex, or explicitly ask the skill to use that origin. Client precedence is `--server`, then `PHOTOPROT_URL`, then the plugin's `settings.json`. Do not edit an installed cache as a permanent configuration method.
 

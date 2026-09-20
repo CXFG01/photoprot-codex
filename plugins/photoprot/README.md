@@ -25,7 +25,7 @@ Start a fresh local Codex task, attach an image, select PhotoProt's `protein-sea
 
 ## Server configuration
 
-`settings.json` contains the current public HTTPS origin. The bundled `trycloudflare.com` URL is temporary and changes if its tunnel is recreated. For a stable deployment, change this setting or set `PHOTOPROT_URL` in the environment used by Codex.
+`settings.json` uses the stable HTTPS origin `https://api.photoprot.uk`, connected to Brev through a named Cloudflare Tunnel. To use your own deployment, change this setting or set `PHOTOPROT_URL` in the environment used by Codex.
 
 Priority: explicit `--server` → `PHOTOPROT_URL` → `settings.json`.
 

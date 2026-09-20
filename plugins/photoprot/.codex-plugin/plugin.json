@@ -1,6 +1,6 @@
 {
   "name": "photoprot",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Search protein images against PhotoProt and return ranked PDB candidates.",
   "author": {
     "name": "PhotoProt"
@@ -25,7 +25,7 @@
   },
   "license": "MIT",
   "repository": "https://github.com/CXFG01/photoprot-codex",
-  "homepage": "https://github.com/CXFG01/photoprot-codex",
+  "homepage": "https://photoprot.uk",
   "keywords": [
     "protein",
     "pdb",

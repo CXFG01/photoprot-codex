@@ -93,7 +93,7 @@ def network_error(exc, uploading):
 
 
 def request_json(url, data=None, mime=None, timeout=90):
-    headers = {'Accept': 'application/json', 'User-Agent': 'PhotoProt-Codex/0.1.1'}
+    headers = {'Accept': 'application/json', 'User-Agent': 'PhotoProt-Codex/0.1.2'}
     if mime:
         headers['Content-Type'] = mime
     req = urllib.request.Request(url, data=data, headers=headers)
