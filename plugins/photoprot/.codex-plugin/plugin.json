@@ -1,6 +1,6 @@
 {
   "name": "photoprot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Search protein images against PhotoProt and return ranked PDB candidates.",
   "author": {
     "name": "PhotoProt"

@@ -11,6 +11,8 @@ import math
 import os
 from pathlib import Path
 import re
+import socket
+import ssl
 import sys
 import urllib.error
 import urllib.parse
@@ -62,8 +64,36 @@ def read_image(path):
     return data, mime
 
 
+def network_error(exc, uploading):
+    reason = exc.reason if isinstance(exc, urllib.error.URLError) else exc
+    if isinstance(reason, socket.gaierror):
+        message = ('DNS resolution failed for the server or configured proxy. '
+                   'This can be caused by restricted Codex network access or DNS/VPN/proxy settings; '
+                   'it does not establish a server outage. Run --health with the same Python interpreter '
+                   'and approved network access before changing the server URL.')
+    elif isinstance(reason, ssl.SSLCertVerificationError):
+        message = ('TLS certificate verification failed. Check this Python interpreter\'s trusted '
+                   'certificates and any HTTPS proxy. Do not disable certificate verification.')
+    elif isinstance(reason, ssl.SSLError):
+        message = 'TLS negotiation failed. Check Python TLS support and HTTPS proxy settings; keep certificate verification enabled.'
+    elif isinstance(reason, TimeoutError):
+        message = 'The network request timed out. Check connectivity with --health; a timeout alone does not establish a server outage.'
+    elif isinstance(reason, PermissionError):
+        message = 'Network access was denied by the execution environment. Request network access through Codex approval and check --health.'
+    elif isinstance(reason, ConnectionRefusedError):
+        message = 'The server or configured proxy refused the connection. Check --health and the proxy/server configuration.'
+    else:
+        # Avoid printing arbitrary exception text, which can contain proxy credentials or URLs.
+        message = 'A network connection failed. Check --health using the same Python interpreter and approved network access, then check DNS/VPN/proxy settings.'
+    if uploading:
+        message += ' The image request was not automatically retried; explicitly request a retry after resolving connectivity.'
+    else:
+        message += ' The request was not automatically retried.'
+    return message
+
+
 def request_json(url, data=None, mime=None, timeout=90):
-    headers = {'Accept': 'application/json', 'User-Agent': 'PhotoProt-Codex/0.1.0'}
+    headers = {'Accept': 'application/json', 'User-Agent': 'PhotoProt-Codex/0.1.1'}
     if mime:
         headers['Content-Type'] = mime
     req = urllib.request.Request(url, data=data, headers=headers)
@@ -84,8 +114,8 @@ def request_json(url, data=None, mime=None, timeout=90):
         if 300 <= exc.code < 400:
             raise SearchError('The server redirected the request. No redirect was followed; verify the configured PhotoProt URL.') from None
         raise SearchError(messages.get(exc.code, f'PhotoProt returned HTTP {exc.code}.')) from None
-    except (urllib.error.URLError, TimeoutError, OSError):
-        raise SearchError('Could not reach PhotoProt or the request timed out. Check the server/tunnel address. The upload was not automatically retried.') from None
+    except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        raise SearchError(network_error(exc, data is not None)) from None
     if len(raw) > MAX_RESPONSE_BYTES:
         raise SearchError('The server response exceeded the expected size.')
     try:

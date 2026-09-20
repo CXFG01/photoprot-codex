@@ -11,6 +11,14 @@ Use the user's attached protein image as a single query to the configured PhotoP
 
 For a server availability question, run the client with `--health` and report its actual response. Do not request an image or upload anything for that check.
 
+### Network access and first-use check
+
+This client needs outbound HTTPS from its Python process. Browser access to PhotoProt does not establish that a sandboxed shell has network access. Before the first image search in a task, run `--health` using the same Python interpreter, server configuration and execution permissions intended for the image search. Reuse a successful check within that task unless connectivity fails or the environment changes.
+
+When outbound access is restricted, use Codex's supported network approval mechanism for this command if available and permitted by the active policy. Explain that approval allows Python to contact the configured PhotoProt server. Do not bypass the sandbox, change security settings or switch tools to evade a denial. If approval is unavailable or denied, report the restriction and stop.
+
+On DNS or permission failure, report the specific failure; do not call it a server outage or ask for a replacement URL without evidence. A health GET can be repeated after network approval because it sends no image. Once health succeeds, run the originally requested search with the same approved access. If an image POST has already failed, do not resend it merely because health now succeeds: obtain an explicit retry request (or approval that explicitly includes retrying that image). TLS failures require trusted-certificate/proxy diagnosis, never disabling verification. If approved health still fails, suggest checking the same interpreter in the user's terminal to distinguish Codex restrictions from local DNS/VPN/proxy configuration.
+
 1. Resolve the actual readable local file path supplied with the user's attachment or explicit file selection. If multiple images are attached and the target is ambiguous, ask which image. Never scan a workspace for an arbitrary image or silently send additional files. Do not infer a filename from visible pixels, extract images from private Codex caches, synthesize an image, or guess the protein instead of calling the server. If the attachment is visible only as pixels and no readable local file reference is exposed, ask for a file attachment with an accessible path or an explicit local path. Do not claim that an image was searched without a completed API call.
 2. Briefly say that you will send this image to the configured PhotoProt server and retrieve ranked PDB candidates. Invoking PhotoProt to search the image authorizes that upload; do not request redundant confirmation. Honour any user restriction on external uploads. This is a public research preview, not a confidential-upload service. If the user identifies the material as confidential, explain this limitation before uploading and obtain their direction.
 3. Run the bundled Python client with the exact image path. Resolve `../../scripts/search_protein.py` relative to this SKILL.md. Use an available Python 3.10+ interpreter (`python3`, `python`, or `py -3`; on Codex desktop, the workspace dependency tool can locate its bundled Python). The client uses only the standard library; no pip install is needed. Pass paths as properly quoted arguments, not shell-interpolated code.
@@ -26,7 +34,7 @@ For a server availability question, run the client with `--health` and report it
 ## Inputs and failures
 
 - PNG, JPEG or WebP, at most 10 MB and subject to the server's 20-megapixel limit. Original image bytes are uploaded without cropping, recolouring, resizing or other edits by this plugin. Server preprocessing handles the 224×224 model input.
-- The included Cloudflare preview address is temporary. On an unavailable/expired endpoint, explain the failure and request the new server address; never fabricate a result table.
+- The included Cloudflare preview address is temporary. Diagnose DNS, permission, TLS and timeout errors using the network workflow above. Request a new address only when there is evidence the endpoint has expired or changed; never fabricate a result table.
 - Do not silently retry failed POST uploads. Report busy/time-out conditions; an explicit retry request can repeat the search.
 - Returned PDB pages are the structure source of truth. Index renders are not displayed as deposited structures.
 

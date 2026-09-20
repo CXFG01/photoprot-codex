@@ -1,5 +1,7 @@
 import importlib.util
 import math
+import socket
+import ssl
 from pathlib import Path
 import tempfile
 import unittest
@@ -17,6 +19,39 @@ def payload():
 
 
 class ClientTests(unittest.TestCase):
+    def test_network_failures_are_distinguished_without_retry(self):
+        cases = [
+            (socket.gaierror(8, 'nodename nor servname provided, or not known'), 'DNS resolution failed'),
+            (PermissionError(13, 'denied'), 'Network access was denied'),
+            (ssl.SSLCertVerificationError(1, 'certificate verify failed'), 'TLS certificate verification failed'),
+            (ssl.SSLError(1, 'handshake'), 'TLS negotiation failed'),
+            (TimeoutError('timed out'), 'network request timed out'),
+            (ConnectionRefusedError('refused'), 'refused the connection'),
+            (ConnectionResetError('reset'), 'network connection failed'),
+        ]
+        for reason, expected in cases:
+            for exc in (reason, urllib.error.URLError(reason)):
+                with self.subTest(reason=type(reason).__name__, wrapped=isinstance(exc, urllib.error.URLError)):
+                    with patch.object(client.urllib.request, 'build_opener') as opener:
+                        opener.return_value.open.side_effect = exc
+                        with self.assertRaises(client.SearchError) as error:
+                            client.request_json('https://example.org', b'image', 'image/png')
+                        self.assertIn(expected, str(error.exception))
+                        self.assertIn('image request was not automatically retried', str(error.exception))
+                        self.assertEqual(opener.return_value.open.call_count, 1)
+
+    def test_health_error_does_not_claim_upload_or_expose_raw_reason(self):
+        for reason in [socket.gaierror(8, 'private-host'), 'https://user:secret@proxy.invalid']:
+            with patch.object(client.urllib.request, 'build_opener') as opener:
+                opener.return_value.open.side_effect = urllib.error.URLError(reason)
+                with self.assertRaises(client.SearchError) as error:
+                    client.request_json('https://example.org/api/health')
+                message = str(error.exception)
+                self.assertNotIn('secret', message)
+                self.assertNotIn('private-host', message)
+                self.assertNotIn('image request was', message)
+                self.assertEqual(opener.return_value.open.call_count, 1)
+
     def test_contents_and_size_not_extension(self):
         with tempfile.TemporaryDirectory() as folder:
             file=Path(folder)/'input.jpeg'

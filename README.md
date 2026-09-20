@@ -25,7 +25,22 @@ You can also ask “Check whether the PhotoProt server is available” without s
 
 The attachment must provide a readable local file path. If your attachment surface exposes only a visual preview, provide the image's local path. This plugin uses Codex's attachment interface; it does not add a separate upload widget or integrate with web-only ChatGPT.
 
-## What you get
+## Updating an existing installation
+
+```sh
+codex plugin marketplace upgrade photoprot
+codex plugin add photoprot@photoprot
+```
+
+Start a new task afterwards so Codex reads the updated skill instructions.
+
+## Network access in Codex
+
+PhotoProt needs outbound HTTPS from Python. The skill checks server health before the first image upload in each task and requests network approval through Codex when required. A browser may reach the service while a restricted Codex command cannot resolve its hostname. A DNS error alone is not evidence that the service is offline.
+
+Approve the network request if you want to use the service. If approved access still fails, compare `--health` using the same Python interpreter in your terminal and check local DNS/VPN/proxy settings. Certificate errors are reported separately; do not disable TLS verification. Failed image uploads are never silently retried.
+
+## Result columns
 
 | Column | Meaning |
 |---|---|
