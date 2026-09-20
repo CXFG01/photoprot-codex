@@ -58,3 +58,13 @@ python -m unittest discover -s tests -v
 ```
 
 Unit tests cover upload types/limits, unchanged image bytes, malformed rankings, error handling, metadata failure and Markdown escaping. A live smoke test uses the public 3I3W training example and verifies the actual 20-result server response and metadata. Two user-supplied file attachments were also searched through the installed skill and returned real server tables. These are workflow checks, not an accuracy benchmark or a guarantee that every Codex attachment surface exposes a file path.
+
+
+## Creators
+
+- **Nichita Mitrea** — [nichmitrea22@gmail.com](mailto:nichmitrea22@gmail.com)
+- **Ahura Farhadi** — [ahura.farhadi03@gmail.com](mailto:ahura.farhadi03@gmail.com)
+
+## Licence
+
+Licensed under [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for creator attribution.

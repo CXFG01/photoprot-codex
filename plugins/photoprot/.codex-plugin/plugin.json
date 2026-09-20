@@ -3,14 +3,14 @@
   "version": "0.1.2",
   "description": "Search protein images against PhotoProt and return ranked PDB candidates.",
   "author": {
-    "name": "PhotoProt"
+    "name": "Nichita Mitrea and Ahura Farhadi"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "PhotoProt",
     "shortDescription": "A protein image becomes a ranked PDB table.",
     "longDescription": "Attach a protein cartoon or ribbon image and ask PhotoProt to search it. The plugin sends the image to your configured PhotoProt server and returns 20 ranked PDB entries with protein names, organisms and similarity scores. Public research preview; scores are not confidence probabilities.",
-    "developerName": "PhotoProt",
+    "developerName": "Nichita Mitrea and Ahura Farhadi",
     "category": "Productivity",
     "capabilities": [],
     "defaultPrompt": [
@@ -23,7 +23,7 @@
     "logo": "./assets/icon.svg",
     "privacyPolicyURL": "https://github.com/CXFG01/photoprot-codex/blob/main/plugins/photoprot/PRIVACY.md"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": "https://github.com/CXFG01/photoprot-codex",
   "homepage": "https://photoprot.uk",
   "keywords": [

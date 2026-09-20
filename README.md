@@ -97,4 +97,12 @@ Report reproducible issues through [GitHub Issues](https://github.com/CXFG01/pho
 
 ## Licence
 
-The plugin code and documentation are [MIT licensed](LICENSE). This licence does not grant rights to third-party query images, PDB-derived metadata, model weights, or the hosted service.
+The original plugin code and documentation are licensed under [Apache License 2.0](LICENSE). Preserve applicable copyright and attribution notices, including [NOTICE](NOTICE), when redistributing as required by the licence. This licence does not grant rights to third-party query images, PDB-derived metadata, model weights, or the hosted service.
+
+
+This licence applies from this revision onward. Earlier versions released under MIT remain available under their original terms. Apache 2.0 does not require a visible credit in every application interface.
+
+## Creators
+
+- **Nichita Mitrea** — [nichmitrea22@gmail.com](mailto:nichmitrea22@gmail.com)
+- **Ahura Farhadi** — [ahura.farhadi03@gmail.com](mailto:ahura.farhadi03@gmail.com)
