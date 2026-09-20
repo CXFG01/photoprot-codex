@@ -7,3 +7,15 @@ __pycache__/
 Thumbs.db
 *.log
 dist/
+
+# Local credentials and deployment exports
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+*token*.txt
+cloudflare-token
+photoprot-token
+cloudflare-tunnel-command.txt
+credentials.json
+*.log

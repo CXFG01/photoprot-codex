@@ -1,0 +1,10 @@
+[extend]
+useDefault = true
+
+# Verified SHA-256 of this public file; not a credential. Narrow exception only.
+[[allowlists]]
+description = "Service file checksum in the reproducibility manifest"
+condition = "AND"
+paths = ['(^|/)SHA256SUMS\.json$']
+regexTarget = "line"
+regexes = ['"deploy/photoprot-api\.service": "[a-f0-9]{64}"']

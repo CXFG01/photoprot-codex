@@ -1,5 +1,9 @@
 # PhotoProt for Codex
 
+> **Hackathon prototype.** PhotoProt was built for a hackathon. It is experimental and not yet polished or production-ready. Expect rough edges, incomplete coverage and incorrect matches; verify results against the original PDB entry.
+
+[**Donate / support continued development →**](https://photoprot.uk/support.html) · Donations are not enabled yet. The support page will provide the payment link once it is activated.
+
 **A protein image becomes a ranked PDB table.**
 
 Attach a protein cartoon or ribbon image to a local Codex task and ask PhotoProt to search it. The plugin sends that image to the PhotoProt service and returns 20 ranked PDB candidates with names, organisms, similarity scores and links to RCSB.
