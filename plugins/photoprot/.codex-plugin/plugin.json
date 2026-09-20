@@ -1,0 +1,35 @@
+{
+  "name": "photoprot",
+  "version": "0.1.0",
+  "description": "Search protein images against PhotoProt and return ranked PDB candidates.",
+  "author": {
+    "name": "PhotoProt"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PhotoProt",
+    "shortDescription": "A protein image becomes a ranked PDB table.",
+    "longDescription": "Attach a protein cartoon or ribbon image and ask PhotoProt to search it. The plugin sends the image to your configured PhotoProt server and returns 20 ranked PDB entries with protein names, organisms and similarity scores. Public research preview; scores are not confidence probabilities.",
+    "developerName": "PhotoProt",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Search this protein image with PhotoProt.",
+      "Find the top 20 PDB matches for my attached image.",
+      "Check whether the PhotoProt server is available."
+    ],
+    "brandColor": "#345C40",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/icon.svg",
+    "privacyPolicyURL": "https://github.com/CXFG01/photoprot-codex/blob/main/plugins/photoprot/PRIVACY.md"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/CXFG01/photoprot-codex",
+  "homepage": "https://github.com/CXFG01/photoprot-codex",
+  "keywords": [
+    "protein",
+    "pdb",
+    "image-search",
+    "structural-biology"
+  ]
+}
